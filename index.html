@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spelling Bee Practice</title>
+  <style>
+    :root { --bg:#f6f7fb; --card:#fff; --text:#222; --muted:#666; --border:#dcdfea; --good:#dff6e3; --bad:#fde2e2; --accent:#2d5bff; }
+    body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 12px; font-size: 28px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+    .stats { display:flex; gap:12px; flex-wrap:wrap; }
+    .pill { background:#fff; border:1px solid var(--border); border-radius:999px; padding:8px 12px; font-size:14px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .card.correct { background: var(--good); }
+    .card.incorrect { background: var(--bad); }
+    .label { font-size: 12px; color:var(--muted); margin-bottom:10px; }
+    .word { min-height: 28px; font-size: 24px; font-weight: bold; margin: 6px 0 12px; }
+    .word.hidden { color: transparent; user-select:none; }
+    .actions { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+    button { border:1px solid var(--border); background:#fff; border-radius:10px; padding:10px 12px; cursor:pointer; font-size:14px; }
+    button:hover { border-color:#bfc7e6; }
+    button.primary { background: var(--accent); color:#fff; border-color:var(--accent); }
+    button.good { border-color:#7bc58a; }
+    button.bad { border-color:#e28a8a; }
+    .notice, .results { background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px; }
+    .notice { margin-top: 18px; }
+    .results { display:none; max-width:520px; margin: 40px auto; text-align:center; }
+    .results.visible { display:block; }
+    .hidden-section { display:none; }
+    .small { color:var(--muted); font-size:14px; }
+    code { background:#f1f3f9; padding:2px 5px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="app">
+      <div class="topbar">
+        <div>
+          <h1>Spelling Bee Practice</h1>
+          <div class="small">Click any card. Use mouse only.</div>
+        </div>
+        <div class="stats">
+          <div class="pill">Total: <span id="totalCount">0</span></div>
+          <div class="pill">Correct: <span id="correctCount">0</span></div>
+          <div class="pill">Incorrect: <span id="incorrectCount">0</span></div>
+          <div class="pill">Remaining: <span id="remainingCount">0</span></div>
+        </div>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div id="notice" class="notice hidden-section"></div>
+      <div id="results" class="results">
+        <h2>Session Results</h2>
+        <p><strong>Correct:</strong> <span id="rCorrect">0</span></p>
+        <p><strong>Incorrect:</strong> <span id="rIncorrect">0</span></p>
+        <p><strong>Success Rate:</strong> <span id="rPct">0%</span></p>
+        <button class="primary" id="restartBtn">Restart Session</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./audio/manifest.js"></script>
+  <script>
+    (function () {
+      const manifest = window.AUDIO_MANIFEST;
+      const grid = document.getElementById('grid');
+      const notice = document.getElementById('notice');
+      const results = document.getElementById('results');
+      const totalCount = document.getElementById('totalCount');
+      const correctCount = document.getElementById('correctCount');
+      const incorrectCount = document.getElementById('incorrectCount');
+      const remainingCount = document.getElementById('remainingCount');
+      const restartBtn = document.getElementById('restartBtn');
+
+      if (!Array.isArray(manifest) || manifest.length === 0) {
+        notice.classList.remove('hidden-section');
+        notice.innerHTML = `
+          <h3>Could not load the audio manifest.</h3>
+          <p>Expected file: <code>./audio/manifest.js</code></p>
+          <p>Before opening this page, make sure you have:</p>
+          <ol>
+            <li>Created MP3 files in the <code>audio</code> folder.</li>
+            <li>Generated <code>audio/manifest.js</code> with the Python script.</li>
+          </ol>
+          <p class="small">Technical detail: <code>window.AUDIO_MANIFEST</code> was missing or empty.</p>`;
+        return;
+      }
+
+      let cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false })));
+      let currentAudio = null;
+
+      restartBtn.addEventListener('click', () => {
+        cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false })));
+        results.classList.remove('visible');
+        grid.innerHTML = '';
+        render();
+      });
+
+      function shuffle(arr) {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function play(src) {
+        if (!src) return;
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        }
+        currentAudio = new Audio(src);
+        currentAudio.play().catch(err => {
+          alert('Could not play audio: ' + err.message);
+        });
+      }
+
+      function setAssessment(idx, value) {
+        cards[idx].assessment = value;
+        render();
+        maybeFinish();
+      }
+
+      function maybeFinish() {
+        const assessed = cards.filter(c => c.assessment !== null);
+        if (assessed.length !== cards.length) return;
+        const correct = cards.filter(c => c.assessment === 'correct').length;
+        const incorrect = cards.filter(c => c.assessment === 'incorrect').length;
+        const pct = cards.length ? Math.round((correct / cards.length) * 100) : 0;
+        document.getElementById('rCorrect').textContent = correct;
+        document.getElementById('rIncorrect').textContent = incorrect;
+        document.getElementById('rPct').textContent = pct + '%';
+        results.classList.add('visible');
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }
+
+      function updateStats() {
+        const correct = cards.filter(c => c.assessment === 'correct').length;
+        const incorrect = cards.filter(c => c.assessment === 'incorrect').length;
+        totalCount.textContent = cards.length;
+        correctCount.textContent = correct;
+        incorrectCount.textContent = incorrect;
+        remainingCount.textContent = cards.length - correct - incorrect;
+      }
+
+      function render() {
+        updateStats();
+        grid.innerHTML = '';
+        cards.forEach((card, idx) => {
+          const el = document.createElement('div');
+          el.className = 'card ' + (card.assessment || '');
+          const wordClass = card.shown ? 'word' : 'word hidden';
+          el.innerHTML = `
+            <div class="label">Word Card ${idx + 1}</div>
+            <div class="${wordClass}">${escapeHtml(card.word)}</div>
+            <div class="actions">
+              <button data-action="playWord">▶ Word</button>
+              <button data-action="playDefinition">Definition</button>
+              <button data-action="playSentence">Sentence</button>
+              <button data-action="show" class="primary">Show</button>
+              <button data-action="correct" class="good">Correct</button>
+              <button data-action="incorrect" class="bad">Incorrect</button>
+            </div>`;
+
+          el.querySelector('[data-action="playWord"]').addEventListener('click', () => play(card.wordAudio));
+          el.querySelector('[data-action="playDefinition"]').addEventListener('click', () => play(card.definitionAudio));
+          el.querySelector('[data-action="playSentence"]').addEventListener('click', () => play(card.sentenceAudio));
+          el.querySelector('[data-action="show"]').addEventListener('click', () => {
+            cards[idx].shown = true;
+            render();
+          });
+          el.querySelector('[data-action="correct"]').addEventListener('click', () => setAssessment(idx, 'correct'));
+          el.querySelector('[data-action="incorrect"]').addEventListener('click', () => setAssessment(idx, 'incorrect'));
+
+          grid.appendChild(el);
+        });
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>
