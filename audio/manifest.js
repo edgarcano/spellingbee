@@ -1,0 +1,482 @@
+window.AUDIO_MANIFEST = [
+  {
+    "word": "again",
+    "wordAudio": "./audio/Word_again.mp3",
+    "definitionAudio": "./audio/Definition_again.mp3",
+    "sentenceAudio": "./audio/Sentence_again.mp3"
+  },
+  {
+    "word": "answer",
+    "wordAudio": "./audio/Word_answer.mp3",
+    "definitionAudio": "./audio/Definition_answer.mp3",
+    "sentenceAudio": "./audio/Sentence_answer.mp3"
+  },
+  {
+    "word": "arrive",
+    "wordAudio": "./audio/Word_arrive.mp3",
+    "definitionAudio": "./audio/Definition_arrive.mp3",
+    "sentenceAudio": "./audio/Sentence_arrive.mp3"
+  },
+  {
+    "word": "athletic",
+    "wordAudio": "./audio/Word_athletic.mp3",
+    "definitionAudio": "./audio/Definition_athletic.mp3",
+    "sentenceAudio": "./audio/Sentence_athletic.mp3"
+  },
+  {
+    "word": "backpack",
+    "wordAudio": "./audio/Word_backpack.mp3",
+    "definitionAudio": "./audio/Definition_backpack.mp3",
+    "sentenceAudio": "./audio/Sentence_backpack.mp3"
+  },
+  {
+    "word": "balloon",
+    "wordAudio": "./audio/Word_balloon.mp3",
+    "definitionAudio": "./audio/Definition_balloon.mp3",
+    "sentenceAudio": "./audio/Sentence_balloon.mp3"
+  },
+  {
+    "word": "believe",
+    "wordAudio": "./audio/Word_believe.mp3",
+    "definitionAudio": "./audio/Definition_believe.mp3",
+    "sentenceAudio": "./audio/Sentence_believe.mp3"
+  },
+  {
+    "word": "birthday",
+    "wordAudio": "./audio/Word_birthday.mp3",
+    "definitionAudio": "./audio/Definition_birthday.mp3",
+    "sentenceAudio": "./audio/Sentence_birthday.mp3"
+  },
+  {
+    "word": "breakfast",
+    "wordAudio": "./audio/Word_breakfast.mp3",
+    "definitionAudio": "./audio/Definition_breakfast.mp3",
+    "sentenceAudio": "./audio/Sentence_breakfast.mp3"
+  },
+  {
+    "word": "brought",
+    "wordAudio": "./audio/Word_brought.mp3",
+    "definitionAudio": "./audio/Definition_brought.mp3",
+    "sentenceAudio": "./audio/Sentence_brought.mp3"
+  },
+  {
+    "word": "busy",
+    "wordAudio": "./audio/Word_busy.mp3",
+    "definitionAudio": "./audio/Definition_busy.mp3",
+    "sentenceAudio": "./audio/Sentence_busy.mp3"
+  },
+  {
+    "word": "butterfly",
+    "wordAudio": "./audio/Word_butterfly.mp3",
+    "definitionAudio": "./audio/Definition_butterfly.mp3",
+    "sentenceAudio": "./audio/Sentence_butterfly.mp3"
+  },
+  {
+    "word": "carbohydrates",
+    "wordAudio": "./audio/Word_carbohydrates.mp3",
+    "definitionAudio": "./audio/Definition_carbohydrates.mp3",
+    "sentenceAudio": "./audio/Sentence_carbohydrates.mp3"
+  },
+  {
+    "word": "caught",
+    "wordAudio": "./audio/Word_caught.mp3",
+    "definitionAudio": "./audio/Definition_caught.mp3",
+    "sentenceAudio": "./audio/Sentence_caught.mp3"
+  },
+  {
+    "word": "colorful",
+    "wordAudio": "./audio/Word_colorful.mp3",
+    "definitionAudio": "./audio/Definition_colorful.mp3",
+    "sentenceAudio": "./audio/Sentence_colorful.mp3"
+  },
+  {
+    "word": "complete",
+    "wordAudio": "./audio/Word_complete.mp3",
+    "definitionAudio": "./audio/Definition_complete.mp3",
+    "sentenceAudio": "./audio/Sentence_complete.mp3"
+  },
+  {
+    "word": "construction",
+    "wordAudio": "./audio/Word_construction.mp3",
+    "definitionAudio": "./audio/Definition_construction.mp3",
+    "sentenceAudio": "./audio/Sentence_construction.mp3"
+  },
+  {
+    "word": "decide",
+    "wordAudio": "./audio/Word_decide.mp3",
+    "definitionAudio": "./audio/Definition_decide.mp3",
+    "sentenceAudio": "./audio/Sentence_decide.mp3"
+  },
+  {
+    "word": "delicious",
+    "wordAudio": "./audio/Word_delicious.mp3",
+    "definitionAudio": "./audio/Definition_delicious.mp3",
+    "sentenceAudio": "./audio/Sentence_delicious.mp3"
+  },
+  {
+    "word": "discuss",
+    "wordAudio": "./audio/Word_discuss.mp3",
+    "definitionAudio": "./audio/Definition_discuss.mp3",
+    "sentenceAudio": "./audio/Sentence_discuss.mp3"
+  },
+  {
+    "word": "downhill",
+    "wordAudio": "./audio/Word_downhill.mp3",
+    "definitionAudio": "./audio/Definition_downhill.mp3",
+    "sentenceAudio": "./audio/Sentence_downhill.mp3"
+  },
+  {
+    "word": "downtown",
+    "wordAudio": "./audio/Word_downtown.mp3",
+    "definitionAudio": "./audio/Definition_downtown.mp3",
+    "sentenceAudio": "./audio/Sentence_downtown.mp3"
+  },
+  {
+    "word": "early",
+    "wordAudio": "./audio/Word_early.mp3",
+    "definitionAudio": "./audio/Definition_early.mp3",
+    "sentenceAudio": "./audio/Sentence_early.mp3"
+  },
+  {
+    "word": "elephant",
+    "wordAudio": "./audio/Word_elephant.mp3",
+    "definitionAudio": "./audio/Definition_elephant.mp3",
+    "sentenceAudio": "./audio/Sentence_elephant.mp3"
+  },
+  {
+    "word": "enough",
+    "wordAudio": "./audio/Word_enough.mp3",
+    "definitionAudio": "./audio/Definition_enough.mp3",
+    "sentenceAudio": "./audio/Sentence_enough.mp3"
+  },
+  {
+    "word": "exercise",
+    "wordAudio": "./audio/Word_exercise.mp3",
+    "definitionAudio": "./audio/Definition_exercise.mp3",
+    "sentenceAudio": "./audio/Sentence_exercise.mp3"
+  },
+  {
+    "word": "female",
+    "wordAudio": "./audio/Word_female.mp3",
+    "definitionAudio": "./audio/Definition_female.mp3",
+    "sentenceAudio": "./audio/Sentence_female.mp3"
+  },
+  {
+    "word": "fifteen",
+    "wordAudio": "./audio/Word_fifteen.mp3",
+    "definitionAudio": "./audio/Definition_fifteen.mp3",
+    "sentenceAudio": "./audio/Sentence_fifteen.mp3"
+  },
+  {
+    "word": "finally",
+    "wordAudio": "./audio/Word_finally.mp3",
+    "definitionAudio": "./audio/Definition_finally.mp3",
+    "sentenceAudio": "./audio/Sentence_finally.mp3"
+  },
+  {
+    "word": "follow",
+    "wordAudio": "./audio/Word_follow.mp3",
+    "definitionAudio": "./audio/Definition_follow.mp3",
+    "sentenceAudio": "./audio/Sentence_follow.mp3"
+  },
+  {
+    "word": "football",
+    "wordAudio": "./audio/Word_football.mp3",
+    "definitionAudio": "./audio/Definition_football.mp3",
+    "sentenceAudio": "./audio/Sentence_football.mp3"
+  },
+  {
+    "word": "gather",
+    "wordAudio": "./audio/Word_gather.mp3",
+    "definitionAudio": "./audio/Definition_gather.mp3",
+    "sentenceAudio": "./audio/Sentence_gather.mp3"
+  },
+  {
+    "word": "goalkeeper",
+    "wordAudio": "./audio/Word_goalkeeper.mp3",
+    "definitionAudio": "./audio/Definition_goalkeeper.mp3",
+    "sentenceAudio": "./audio/Sentence_goalkeeper.mp3"
+  },
+  {
+    "word": "happen",
+    "wordAudio": "./audio/Word_happen.mp3",
+    "definitionAudio": "./audio/Definition_happen.mp3",
+    "sentenceAudio": "./audio/Sentence_happen.mp3"
+  },
+  {
+    "word": "healthy",
+    "wordAudio": "./audio/Word_healthy.mp3",
+    "definitionAudio": "./audio/Definition_healthy.mp3",
+    "sentenceAudio": "./audio/Sentence_healthy.mp3"
+  },
+  {
+    "word": "huge",
+    "wordAudio": "./audio/Word_huge.mp3",
+    "definitionAudio": "./audio/Definition_huge.mp3",
+    "sentenceAudio": "./audio/Sentence_huge.mp3"
+  },
+  {
+    "word": "investigate",
+    "wordAudio": "./audio/Word_investigate.mp3",
+    "definitionAudio": "./audio/Definition_investigate.mp3",
+    "sentenceAudio": "./audio/Sentence_investigate.mp3"
+  },
+  {
+    "word": "invisible",
+    "wordAudio": "./audio/Word_invisible.mp3",
+    "definitionAudio": "./audio/Definition_invisible.mp3",
+    "sentenceAudio": "./audio/Sentence_invisible.mp3"
+  },
+  {
+    "word": "jewelry",
+    "wordAudio": "./audio/Word_jewelry.mp3",
+    "definitionAudio": "./audio/Definition_jewelry.mp3",
+    "sentenceAudio": "./audio/Sentence_jewelry.mp3"
+  },
+  {
+    "word": "kangaroo",
+    "wordAudio": "./audio/Word_kangaroo.mp3",
+    "definitionAudio": "./audio/Definition_kangaroo.mp3",
+    "sentenceAudio": "./audio/Sentence_kangaroo.mp3"
+  },
+  {
+    "word": "kittens",
+    "wordAudio": "./audio/Word_kittens.mp3",
+    "definitionAudio": "./audio/Definition_kittens.mp3",
+    "sentenceAudio": "./audio/Sentence_kittens.mp3"
+  },
+  {
+    "word": "listen",
+    "wordAudio": "./audio/Word_listen.mp3",
+    "definitionAudio": "./audio/Definition_listen.mp3",
+    "sentenceAudio": "./audio/Sentence_listen.mp3"
+  },
+  {
+    "word": "majesty",
+    "wordAudio": "./audio/Word_majesty.mp3",
+    "definitionAudio": "./audio/Definition_majesty.mp3",
+    "sentenceAudio": "./audio/Sentence_majesty.mp3"
+  },
+  {
+    "word": "minute",
+    "wordAudio": "./audio/Word_minute.mp3",
+    "definitionAudio": "./audio/Definition_minute.mp3",
+    "sentenceAudio": "./audio/Sentence_minute.mp3"
+  },
+  {
+    "word": "nineteen",
+    "wordAudio": "./audio/Word_nineteen.mp3",
+    "definitionAudio": "./audio/Definition_nineteen.mp3",
+    "sentenceAudio": "./audio/Sentence_nineteen.mp3"
+  },
+  {
+    "word": "nutrients",
+    "wordAudio": "./audio/Word_nutrients.mp3",
+    "definitionAudio": "./audio/Definition_nutrients.mp3",
+    "sentenceAudio": "./audio/Sentence_nutrients.mp3"
+  },
+  {
+    "word": "nutritious",
+    "wordAudio": "./audio/Word_nutritious.mp3",
+    "definitionAudio": "./audio/Definition_nutritious.mp3",
+    "sentenceAudio": "./audio/Sentence_nutritious.mp3"
+  },
+  {
+    "word": "often",
+    "wordAudio": "./audio/Word_often.mp3",
+    "definitionAudio": "./audio/Definition_often.mp3",
+    "sentenceAudio": "./audio/Sentence_often.mp3"
+  },
+  {
+    "word": "opposite",
+    "wordAudio": "./audio/Word_opposite.mp3",
+    "definitionAudio": "./audio/Definition_opposite.mp3",
+    "sentenceAudio": "./audio/Sentence_opposite.mp3"
+  },
+  {
+    "word": "photography",
+    "wordAudio": "./audio/Word_photography.mp3",
+    "definitionAudio": "./audio/Definition_photography.mp3",
+    "sentenceAudio": "./audio/Sentence_photography.mp3"
+  },
+  {
+    "word": "possible",
+    "wordAudio": "./audio/Word_possible.mp3",
+    "definitionAudio": "./audio/Definition_possible.mp3",
+    "sentenceAudio": "./audio/Sentence_possible.mp3"
+  },
+  {
+    "word": "pretty",
+    "wordAudio": "./audio/Word_pretty.mp3",
+    "definitionAudio": "./audio/Definition_pretty.mp3",
+    "sentenceAudio": "./audio/Sentence_pretty.mp3"
+  },
+  {
+    "word": "preview",
+    "wordAudio": "./audio/Word_preview.mp3",
+    "definitionAudio": "./audio/Definition_preview.mp3",
+    "sentenceAudio": "./audio/Sentence_preview.mp3"
+  },
+  {
+    "word": "raincoat",
+    "wordAudio": "./audio/Word_raincoat.mp3",
+    "definitionAudio": "./audio/Definition_raincoat.mp3",
+    "sentenceAudio": "./audio/Sentence_raincoat.mp3"
+  },
+  {
+    "word": "sandcastle",
+    "wordAudio": "./audio/Word_sandcastle.mp3",
+    "definitionAudio": "./audio/Definition_sandcastle.mp3",
+    "sentenceAudio": "./audio/Sentence_sandcastle.mp3"
+  },
+  {
+    "word": "satellite",
+    "wordAudio": "./audio/Word_satellite.mp3",
+    "definitionAudio": "./audio/Definition_satellite.mp3",
+    "sentenceAudio": "./audio/Sentence_satellite.mp3"
+  },
+  {
+    "word": "scooter",
+    "wordAudio": "./audio/Word_scooter.mp3",
+    "definitionAudio": "./audio/Definition_scooter.mp3",
+    "sentenceAudio": "./audio/Sentence_scooter.mp3"
+  },
+  {
+    "word": "shoelace",
+    "wordAudio": "./audio/Word_shoelace.mp3",
+    "definitionAudio": "./audio/Definition_shoelace.mp3",
+    "sentenceAudio": "./audio/Sentence_shoelace.mp3"
+  },
+  {
+    "word": "shopping",
+    "wordAudio": "./audio/Word_shopping.mp3",
+    "definitionAudio": "./audio/Definition_shopping.mp3",
+    "sentenceAudio": "./audio/Sentence_shopping.mp3"
+  },
+  {
+    "word": "skeleton",
+    "wordAudio": "./audio/Word_skeleton.mp3",
+    "definitionAudio": "./audio/Definition_skeleton.mp3",
+    "sentenceAudio": "./audio/Sentence_skeleton.mp3"
+  },
+  {
+    "word": "sleeping",
+    "wordAudio": "./audio/Word_sleeping.mp3",
+    "definitionAudio": "./audio/Definition_sleeping.mp3",
+    "sentenceAudio": "./audio/Sentence_sleeping.mp3"
+  },
+  {
+    "word": "someone",
+    "wordAudio": "./audio/Word_someone.mp3",
+    "definitionAudio": "./audio/Definition_someone.mp3",
+    "sentenceAudio": "./audio/Sentence_someone.mp3"
+  },
+  {
+    "word": "sound",
+    "wordAudio": "./audio/Word_sound.mp3",
+    "definitionAudio": "./audio/Definition_sound.mp3",
+    "sentenceAudio": "./audio/Sentence_sound.mp3"
+  },
+  {
+    "word": "squat",
+    "wordAudio": "./audio/Word_squat.mp3",
+    "definitionAudio": "./audio/Definition_squat.mp3",
+    "sentenceAudio": "./audio/Sentence_squat.mp3"
+  },
+  {
+    "word": "stood",
+    "wordAudio": "./audio/Word_stood.mp3",
+    "definitionAudio": "./audio/Definition_stood.mp3",
+    "sentenceAudio": "./audio/Sentence_stood.mp3"
+  },
+  {
+    "word": "strawberry",
+    "wordAudio": "./audio/Word_strawberry.mp3",
+    "definitionAudio": "./audio/Definition_strawberry.mp3",
+    "sentenceAudio": "./audio/Sentence_strawberry.mp3"
+  },
+  {
+    "word": "theater",
+    "wordAudio": "./audio/Word_theater.mp3",
+    "definitionAudio": "./audio/Definition_theater.mp3",
+    "sentenceAudio": "./audio/Sentence_theater.mp3"
+  },
+  {
+    "word": "though",
+    "wordAudio": "./audio/Word_though.mp3",
+    "definitionAudio": "./audio/Definition_though.mp3",
+    "sentenceAudio": "./audio/Sentence_though.mp3"
+  },
+  {
+    "word": "thought",
+    "wordAudio": "./audio/Word_thought.mp3",
+    "definitionAudio": "./audio/Definition_thought.mp3",
+    "sentenceAudio": "./audio/Sentence_thought.mp3"
+  },
+  {
+    "word": "through",
+    "wordAudio": "./audio/Word_through.mp3",
+    "definitionAudio": "./audio/Definition_through.mp3",
+    "sentenceAudio": "./audio/Sentence_through.mp3"
+  },
+  {
+    "word": "together",
+    "wordAudio": "./audio/Word_together.mp3",
+    "definitionAudio": "./audio/Definition_together.mp3",
+    "sentenceAudio": "./audio/Sentence_together.mp3"
+  },
+  {
+    "word": "tomorrow",
+    "wordAudio": "./audio/Word_tomorrow.mp3",
+    "definitionAudio": "./audio/Definition_tomorrow.mp3",
+    "sentenceAudio": "./audio/Sentence_tomorrow.mp3"
+  },
+  {
+    "word": "unhealthy",
+    "wordAudio": "./audio/Word_unhealthy.mp3",
+    "definitionAudio": "./audio/Definition_unhealthy.mp3",
+    "sentenceAudio": "./audio/Sentence_unhealthy.mp3"
+  },
+  {
+    "word": "usually",
+    "wordAudio": "./audio/Word_usually.mp3",
+    "definitionAudio": "./audio/Definition_usually.mp3",
+    "sentenceAudio": "./audio/Sentence_usually.mp3"
+  },
+  {
+    "word": "voice",
+    "wordAudio": "./audio/Word_voice.mp3",
+    "definitionAudio": "./audio/Definition_voice.mp3",
+    "sentenceAudio": "./audio/Sentence_voice.mp3"
+  },
+  {
+    "word": "weather",
+    "wordAudio": "./audio/Word_weather.mp3",
+    "definitionAudio": "./audio/Definition_weather.mp3",
+    "sentenceAudio": "./audio/Sentence_weather.mp3"
+  },
+  {
+    "word": "weekend",
+    "wordAudio": "./audio/Word_weekend.mp3",
+    "definitionAudio": "./audio/Definition_weekend.mp3",
+    "sentenceAudio": "./audio/Sentence_weekend.mp3"
+  },
+  {
+    "word": "whiskers",
+    "wordAudio": "./audio/Word_whiskers.mp3",
+    "definitionAudio": "./audio/Definition_whiskers.mp3",
+    "sentenceAudio": "./audio/Sentence_whiskers.mp3"
+  },
+  {
+    "word": "wildlife",
+    "wordAudio": "./audio/Word_wildlife.mp3",
+    "definitionAudio": "./audio/Definition_wildlife.mp3",
+    "sentenceAudio": "./audio/Sentence_wildlife.mp3"
+  },
+  {
+    "word": "window",
+    "wordAudio": "./audio/Word_window.mp3",
+    "definitionAudio": "./audio/Definition_window.mp3",
+    "sentenceAudio": "./audio/Sentence_window.mp3"
+  }
+];
