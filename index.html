@@ -25,10 +25,16 @@
     button.primary { background: var(--accent); color:#fff; border-color:var(--accent); }
     button.good { border-color:#7bc58a; }
     button.bad { border-color:#e28a8a; }
-    .notice, .results { background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px; }
+    .notice, .results, .report { background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px; }
     .notice { margin-top: 18px; }
     .results { display:none; max-width:520px; margin: 40px auto; text-align:center; }
     .results.visible { display:block; }
+    .report { margin-top: 24px; }
+    .report-header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    .report-header h2 { margin:0; font-size:20px; }
+    .report-actions { display:flex; align-items:center; gap:10px; }
+    .report-status { font-size:13px; color:var(--muted); min-height:18px; }
+    .report-output { width:100%; min-height:320px; box-sizing:border-box; border:1px solid var(--border); border-radius:12px; padding:14px; font: 14px/1.5 SFMono-Regular, Consolas, Monaco, monospace; resize:vertical; background:#fbfcff; color:var(--text); }
     .hidden-section { display:none; }
     .small { color:var(--muted); font-size:14px; }
     code { background:#f1f3f9; padding:2px 5px; border-radius:6px; }
@@ -58,6 +64,21 @@
         <p><strong>Success Rate:</strong> <span id="rPct">0%</span></p>
         <button class="primary" id="restartBtn">Restart Session</button>
       </div>
+      <div class="report">
+        <div class="report-header">
+          <h2>Session Report</h2>
+          <div class="report-actions">
+            <span id="copyStatus" class="report-status"></span>
+            <button id="copyReportBtn" class="primary">Copy To Clipboard</button>
+          </div>
+        </div>
+        <textarea
+          id="reportOutput"
+          class="report-output"
+          readonly
+          aria-label="Session report in markdown"
+        ></textarea>
+      </div>
     </div>
   </div>
 
@@ -73,6 +94,9 @@
       const incorrectCount = document.getElementById('incorrectCount');
       const remainingCount = document.getElementById('remainingCount');
       const restartBtn = document.getElementById('restartBtn');
+      const reportOutput = document.getElementById('reportOutput');
+      const copyReportBtn = document.getElementById('copyReportBtn');
+      const copyStatus = document.getElementById('copyStatus');
 
       if (!Array.isArray(manifest) || manifest.length === 0) {
         notice.classList.remove('hidden-section');
@@ -96,6 +120,17 @@
         results.classList.remove('visible');
         grid.innerHTML = '';
         render();
+      });
+
+      copyReportBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(reportOutput.value);
+          copyStatus.textContent = 'Copied';
+        } catch (err) {
+          reportOutput.focus();
+          reportOutput.select();
+          copyStatus.textContent = 'Copy failed';
+        }
       });
 
       function shuffle(arr) {
@@ -147,8 +182,42 @@
         remainingCount.textContent = cards.length - correct - incorrect;
       }
 
+      function updateReport() {
+        const correct = cards.filter(c => c.assessment === 'correct');
+        const incorrect = cards.filter(c => c.assessment === 'incorrect');
+        const pending = cards.filter(c => c.assessment === null);
+        const responded = correct.length + incorrect.length;
+        const score = responded ? Math.round((correct.length / responded) * 100) : 0;
+
+        reportOutput.value = [
+          '# Session Report',
+          '',
+          '## Summary',
+          `- Correct: ${correct.length}`,
+          `- Incorrect: ${incorrect.length}`,
+          `- Pending: ${pending.length}`,
+          `- Responded: ${responded}`,
+          `- Score: ${score}% (${correct.length}/${responded || 0})`,
+          '',
+          '## Correct Questions',
+          ...toMarkdownList(correct),
+          '',
+          '## Incorrect Questions',
+          ...toMarkdownList(incorrect),
+          '',
+          '## Pending Questions',
+          ...toMarkdownList(pending)
+        ].join('\n');
+      }
+
+      function toMarkdownList(items) {
+        if (!items.length) return ['- None'];
+        return items.map((item, index) => `- ${index + 1}. ${item.word}`);
+      }
+
       function render() {
         updateStats();
+        updateReport();
         grid.innerHTML = '';
         cards.forEach((card, idx) => {
           const el = document.createElement('div');
