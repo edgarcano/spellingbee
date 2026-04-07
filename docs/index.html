@@ -112,11 +112,11 @@
         return;
       }
 
-      let cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false })));
+      let cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false, showConfirm: false })));
       let currentAudio = null;
 
       restartBtn.addEventListener('click', () => {
-        cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false })));
+        cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false, showConfirm: false })));
         results.classList.remove('visible');
         grid.innerHTML = '';
         render();
@@ -223,6 +223,8 @@
           const el = document.createElement('div');
           el.className = 'card ' + (card.assessment || '');
           const wordClass = card.shown ? 'word' : 'word hidden';
+          const showLabel = card.shown ? 'Shown' : (card.showConfirm ? 'sure?' : 'Show');
+
           el.innerHTML = `
             <div class="label">Word Card ${idx + 1}</div>
             <div class="${wordClass}">${escapeHtml(card.word)}</div>
@@ -230,7 +232,7 @@
               <button data-action="playWord">▶ Word</button>
               <button data-action="playDefinition">Definition</button>
               <button data-action="playSentence">Sentence</button>
-              <button data-action="show" class="primary">Show</button>
+              <button data-action="show" class="primary">${showLabel}</button>
               <button data-action="correct" class="good">Correct</button>
               <button data-action="incorrect" class="bad">Incorrect</button>
             </div>`;
@@ -239,7 +241,13 @@
           el.querySelector('[data-action="playDefinition"]').addEventListener('click', () => play(card.definitionAudio));
           el.querySelector('[data-action="playSentence"]').addEventListener('click', () => play(card.sentenceAudio));
           el.querySelector('[data-action="show"]').addEventListener('click', () => {
-            cards[idx].shown = true;
+            if (cards[idx].shown) return;
+            if (cards[idx].showConfirm) {
+              cards[idx].shown = true;
+              cards[idx].showConfirm = false;
+            } else {
+              cards[idx].showConfirm = true;
+            }
             render();
           });
           el.querySelector('[data-action="correct"]').addEventListener('click', () => setAssessment(idx, 'correct'));
