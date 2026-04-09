@@ -10,8 +10,9 @@
     .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
     h1 { margin: 0 0 12px; font-size: 28px; }
     .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
-    .stats { display:flex; gap:12px; flex-wrap:wrap; }
+    .stats { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
     .pill { background:#fff; border:1px solid var(--border); border-radius:999px; padding:8px 12px; font-size:14px; }
+    .toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
     .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
     .card.correct { background: var(--good); }
@@ -53,6 +54,9 @@
           <div class="pill">Correct: <span id="correctCount">0</span></div>
           <div class="pill">Incorrect: <span id="incorrectCount">0</span></div>
           <div class="pill">Remaining: <span id="remainingCount">0</span></div>
+          <div class="toolbar">
+            <button id="newSessionBtn">New Session</button>
+          </div>
         </div>
       </div>
       <div id="grid" class="grid"></div>
@@ -85,6 +89,7 @@
   <script src="./audio/manifest.js"></script>
   <script>
     (function () {
+      const STORAGE_KEY = 'spelling-bee-session-v1';
       const manifest = window.AUDIO_MANIFEST;
       const grid = document.getElementById('grid');
       const notice = document.getElementById('notice');
@@ -94,6 +99,7 @@
       const incorrectCount = document.getElementById('incorrectCount');
       const remainingCount = document.getElementById('remainingCount');
       const restartBtn = document.getElementById('restartBtn');
+      const newSessionBtn = document.getElementById('newSessionBtn');
       const reportOutput = document.getElementById('reportOutput');
       const copyReportBtn = document.getElementById('copyReportBtn');
       const copyStatus = document.getElementById('copyStatus');
@@ -112,15 +118,11 @@
         return;
       }
 
-      let cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false, showConfirm: false })));
+      let cards = loadSession();
       let currentAudio = null;
 
-      restartBtn.addEventListener('click', () => {
-        cards = shuffle(manifest.map(item => ({ ...item, assessment: null, shown: false, showConfirm: false })));
-        results.classList.remove('visible');
-        grid.innerHTML = '';
-        render();
-      });
+      restartBtn.addEventListener('click', startNewSession);
+      newSessionBtn.addEventListener('click', startNewSession);
 
       copyReportBtn.addEventListener('click', async () => {
         try {
@@ -142,6 +144,81 @@
         return copy;
       }
 
+      function createCard(item) {
+        return {
+          ...item,
+          assessment: null,
+          shown: false,
+          showConfirm: false
+        };
+      }
+
+      function createNewSessionCards() {
+        return shuffle(manifest.map(createCard));
+      }
+
+      function loadSession() {
+        const fallback = createNewSessionCards();
+
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return fallback;
+
+          const parsed = JSON.parse(raw);
+          if (!parsed || !Array.isArray(parsed.cards)) return fallback;
+
+          const manifestByWord = new Map(manifest.map(item => [item.word, item]));
+          const restored = [];
+
+          parsed.cards.forEach(savedCard => {
+            const item = manifestByWord.get(savedCard.word);
+            if (!item) return;
+
+            restored.push({
+              ...item,
+              assessment: savedCard.assessment === 'correct' || savedCard.assessment === 'incorrect'
+                ? savedCard.assessment
+                : null,
+              shown: Boolean(savedCard.shown),
+              showConfirm: Boolean(savedCard.showConfirm) && !savedCard.shown
+            });
+            manifestByWord.delete(savedCard.word);
+          });
+
+          manifestByWord.forEach(item => {
+            restored.push(createCard(item));
+          });
+
+          return restored.length ? restored : fallback;
+        } catch (err) {
+          console.warn('Could not restore saved session.', err);
+          return fallback;
+        }
+      }
+
+      function saveSession() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            cards: cards.map(card => ({
+              word: card.word,
+              assessment: card.assessment,
+              shown: card.shown,
+              showConfirm: card.showConfirm
+            }))
+          }));
+        } catch (err) {
+          console.warn('Could not save session.', err);
+        }
+      }
+
+      function startNewSession() {
+        cards = createNewSessionCards();
+        results.classList.remove('visible');
+        grid.innerHTML = '';
+        saveSession();
+        render();
+      }
+
       function play(src) {
         if (!src) return;
         if (currentAudio) {
@@ -156,13 +233,17 @@
 
       function setAssessment(idx, value) {
         cards[idx].assessment = value;
+        saveSession();
         render();
-        maybeFinish();
+        maybeFinish(true);
       }
 
-      function maybeFinish() {
+      function maybeFinish(shouldScroll) {
         const assessed = cards.filter(c => c.assessment !== null);
-        if (assessed.length !== cards.length) return;
+        if (assessed.length !== cards.length) {
+          results.classList.remove('visible');
+          return;
+        }
         const correct = cards.filter(c => c.assessment === 'correct').length;
         const incorrect = cards.filter(c => c.assessment === 'incorrect').length;
         const pct = cards.length ? Math.round((correct / cards.length) * 100) : 0;
@@ -170,7 +251,9 @@
         document.getElementById('rIncorrect').textContent = incorrect;
         document.getElementById('rPct').textContent = pct + '%';
         results.classList.add('visible');
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        if (shouldScroll) {
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
       }
 
       function updateStats() {
@@ -218,6 +301,7 @@
       function render() {
         updateStats();
         updateReport();
+        maybeFinish(false);
         grid.innerHTML = '';
         cards.forEach((card, idx) => {
           const el = document.createElement('div');
@@ -248,6 +332,7 @@
             } else {
               cards[idx].showConfirm = true;
             }
+            saveSession();
             render();
           });
           el.querySelector('[data-action="correct"]').addEventListener('click', () => setAssessment(idx, 'correct'));
@@ -266,6 +351,7 @@
           .replaceAll("'", '&#039;');
       }
 
+      saveSession();
       render();
     })();
   </script>
